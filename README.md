@@ -37,7 +37,7 @@ The Byte Encoder walks the tree and serializes it into a completely flat executi
 Building a binary generator from scratch means you don't get helpful compiler errors; you just get memory crashes. Here is the story of how the hardest obstacles were resolved:
 ### 1. The Hex-Dump Nightmare (Brutal WASM Spec Alignment)
  * **The Problem:** WebAssembly modules are structured with extreme pedantry. Miss a single byte in a section header length, or miscalculate a LEB128 integer vector prefix, and runtimes like Node.js reject the asset instantly with an uninformative CompileError: WebAssembly.compile().
- * **The Solution:** Hours of low-level debugging using manual hex editors. I mapped out the entire WASM binary layout manually—constructing the Type Section, Import Section, Function Section, and Code Vector byte-by-byte using raw byte-arrays in Rust, learning the absolute physics of binary execution.
+ * **The Solution:** Hours of low-level debugging using manual hex editors. I mapped out the entire WASM binary layout manually-constructing the Type Section, Import Section, Function Section, and Code Vector byte-by-byte using raw byte-arrays in Rust, learning the absolute physics of binary execution.
 ### 2. Operator Precedence and Evaluation Order
  * **The Problem:** When parsing a sequence like 5 + 3 - 2, a naive linear parser will quickly evaluate expressions out of order or produce broken state frames when converting high-level structures into a low-level stack machine machine language.
  * **The Solution:** Designed a recursive-descent parser that translates arithmetic trees directly into linear stack machine instructions. Variables are explicitly mapped to local indices via local.set and local.get, matching the native V8 memory design layout.
