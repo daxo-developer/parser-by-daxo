@@ -1,0 +1,115 @@
+fn main() {
+    let file_ptr = read_file(0);
+    let i = 0;
+    let num = 0;
+    
+    while (i < 1000) {
+        let current_char = load_byte(file_ptr + i);
+        if (current_char == 108) {
+            let c1 = load_byte(file_ptr + i + 1);
+            let c2 = load_byte(file_ptr + i + 2);
+            let c3 = load_byte(file_ptr + i + 3);
+            let c4 = load_byte(file_ptr + i + 4);
+            let c5 = load_byte(file_ptr + i + 5);
+            let c6 = load_byte(file_ptr + i + 6);
+            let c7 = load_byte(file_ptr + i + 7);
+            
+            if (c1 == 101) {
+            if (c2 == 116) {
+            if (c3 == 32) {
+            if (c4 == 120) {
+            if (c5 == 32) {
+            if (c6 == 61) {
+            if (c7 == 32) {
+                let j = i + 8;
+                let digit = load_byte(file_ptr + j);
+                if (digit >= 48) {
+                if (digit <= 57) {
+                    num = digit - 48;
+                }}
+            }}}}}}}
+        }
+        i = i + 1;
+    }
+    
+    if (num == 0) {
+        num = 5;
+    }
+    
+    let ptr = alloc(100);
+    store_byte(ptr + 0, 0);
+    store_byte(ptr + 1, 97);
+    store_byte(ptr + 2, 115);
+    store_byte(ptr + 3, 109);
+    store_byte(ptr + 4, 1);
+    store_byte(ptr + 5, 0);
+    store_byte(ptr + 6, 0);
+    store_byte(ptr + 7, 0);
+    store_byte(ptr + 8, 1);
+    store_byte(ptr + 9, 7);
+    store_byte(ptr + 10, 2);
+    store_byte(ptr + 11, 96);
+    store_byte(ptr + 12, 1);
+    store_byte(ptr + 13, 127);
+    store_byte(ptr + 14, 0);
+    store_byte(ptr + 15, 96);
+    store_byte(ptr + 16, 0);
+    store_byte(ptr + 17, 0);
+    store_byte(ptr + 18, 2);
+    store_byte(ptr + 19, 13);
+    store_byte(ptr + 20, 1);
+    store_byte(ptr + 21, 3);
+    store_byte(ptr + 22, 101);
+    store_byte(ptr + 23, 110);
+    store_byte(ptr + 24, 118);
+    store_byte(ptr + 25, 5);
+    store_byte(ptr + 26, 112);
+    store_byte(ptr + 27, 114);
+    store_byte(ptr + 28, 105);
+    store_byte(ptr + 29, 110);
+    store_byte(ptr + 30, 116);
+    store_byte(ptr + 31, 0);
+    store_byte(ptr + 32, 0);
+    store_byte(ptr + 33, 3);
+    store_byte(ptr + 34, 2);
+    store_byte(ptr + 35, 1);
+    store_byte(ptr + 36, 1);
+    store_byte(ptr + 37, 7);
+    store_byte(ptr + 38, 8);
+    store_byte(ptr + 39, 1);
+    store_byte(ptr + 40, 4);
+    store_byte(ptr + 41, 109);
+    store_byte(ptr + 42, 97);
+    store_byte(ptr + 43, 105);
+    store_byte(ptr + 44, 110);
+    store_byte(ptr + 45, 0);
+    store_byte(ptr + 46, 1);
+    store_byte(ptr + 47, 10);
+    store_byte(ptr + 48, 8);
+    store_byte(ptr + 49, 1);
+    store_byte(ptr + 50, 6);
+    store_byte(ptr + 51, 0);
+    store_byte(ptr + 52, 65);
+    store_byte(ptr + 53, num);
+    store_byte(ptr + 54, 16);
+    store_byte(ptr + 55, 0);
+    store_byte(ptr + 56, 11);
+    store_byte(ptr + 57, 0);
+    
+    let out_name = 600;
+    store_byte(out_name + 0, 111);
+    store_byte(out_name + 1, 117);
+    store_byte(out_name + 2, 116);
+    store_byte(out_name + 3, 112);
+    store_byte(out_name + 4, 117);
+    store_byte(out_name + 5, 116);
+    store_byte(out_name + 6, 46);
+    store_byte(out_name + 7, 119);
+    store_byte(out_name + 8, 97);
+    store_byte(out_name + 9, 115);
+    store_byte(out_name + 10, 109);
+    store_byte(out_name + 11, 0);
+    
+    write_file(out_name, ptr, 57);
+    print(num);
+}
