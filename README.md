@@ -1,5 +1,4 @@
 
-```
 # DX-WASM: Ahead-of-Time (AOT) Compiler & Custom DSL From Scratch 🚀
 > **"Why use a ready-made WebAssembly encoder library when you can spend nights staring at raw hex dumps, figuring out exactly why the Google V8 engine rejected your binary stream?"**
 This is not another generic project wrapped in heavy third-party dependencies. This is a lightweight, zero-dependency, Ahead-of-Time (AOT) compiler written in **Rust** that takes a custom domain-specific language (**DX**) and compiles it directly into valid, executable **WebAssembly (WASM)** binary modules. 
