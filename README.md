@@ -1,0 +1,75 @@
+
+```
+# DX-WASM: Ahead-of-Time (AOT) Compiler & Custom DSL From Scratch 🚀
+> **"Why use a ready-made WebAssembly encoder library when you can spend nights staring at raw hex dumps, figuring out exactly why the Google V8 engine rejected your binary stream?"**
+This is not another generic project wrapped in heavy third-party dependencies. This is a lightweight, zero-dependency, Ahead-of-Time (AOT) compiler written in **Rust** that takes a custom domain-specific language (**DX**) and compiles it directly into valid, executable **WebAssembly (WASM)** binary modules. 
+No LLVM wrappers, no `walrus` or `wasm-encoder` crates. Just raw tokenization, expression parsing, Abstract Syntax Tree (AST) generation, and manual byte-by-byte serialization.
+---
+## 💡 The Philosophy: Total Control
+> Most modern software stacks abstract away the bare metal. We use high-level libraries that run on complex runtimes. I built **DX-WASM** because I wanted to understand the absolute baseline of how a browser's execution engine (like V8) talks to raw machine logic. 
+If I want variables to be declared as `set x to 5;` instead of `let x = 5;` tomorrow, I don’t wait for a language committee—I just modify a couple of lines in my custom Lexer and Parser. It’s a completely self-contained language ecosystem and specification.
+---
+## 📐 Language Specification & Pipeline Transformation
+The **DX** language supports native function declarations (`fn`), variable definitions (`let`), explicit assignment (`=`), basic arithmetic operators (`+`, `-`), and FFI integration with the host JavaScript environment.
+Here is exactly how a clean script is digested and transformed down to the metal:
+### 1. Source Script (`compiler.dx` / `test.dx`)
+```
+fn main() {
+    let x = 5 + 3 - 2;
+}
+```
+### 2. Lexer & AST Parser Output (Internal Rust Representation)
+The compiler groups character streams into strict cryptographic tokens (Token::Fn, Token::Let, Token::Number(i32), etc.) and constructs a validated node tree ensuring correct operator precedence:
+```
+       Assign (x)
+          │
+      ┌───┴───┐
+     Plus     2
+   ┌───┴───┐
+   5       3
+```
+### 3. Native WebAssembly Binary Byte Stream
+The Byte Encoder walks the tree and serializes it into a completely flat execution stack format, mapping instructions directly onto hex primitives (e.g., i32.const -> 0x41, i32.add -> 0x6A):
+```
+00 61 73 6D  01 00 00 00  01 08 02 60  00 00 60 01 ...
+└─ \0asm ──┘ └─ version ─┘ └─ Type Section (Signatures) ─┘
+```
+## 🪵 Battle Scars: Engineering Challenges & Breakthroughs
+Building a binary generator from scratch means you don't get helpful compiler errors; you just get memory crashes. Here is the story of how the hardest obstacles were resolved:
+### 1. The Hex-Dump Nightmare (Brutal WASM Spec Alignment)
+ * **The Problem:** WebAssembly modules are structured with extreme pedantry. Miss a single byte in a section header length, or miscalculate a LEB128 integer vector prefix, and runtimes like Node.js reject the asset instantly with an uninformative CompileError: WebAssembly.compile().
+ * **The Solution:** Hours of low-level debugging using manual hex editors. I mapped out the entire WASM binary layout manually—constructing the Type Section, Import Section, Function Section, and Code Vector byte-by-byte using raw byte-arrays in Rust, learning the absolute physics of binary execution.
+### 2. Operator Precedence and Evaluation Order
+ * **The Problem:** When parsing a sequence like 5 + 3 - 2, a naive linear parser will quickly evaluate expressions out of order or produce broken state frames when converting high-level structures into a low-level stack machine machine language.
+ * **The Solution:** Designed a recursive-descent parser that translates arithmetic trees directly into linear stack machine instructions. Variables are explicitly mapped to local indices via local.set and local.get, matching the native V8 memory design layout.
+### 3. Bridging the JavaScript-to-WASM FFI Boundary
+ * **The Problem:** A pure WASM binary isolated in the V8 sandbox cannot talk to your monitor or print logs natively. To verify my mathematical outputs, I needed a way to pipeline state values back into the host terminal.
+ * **The Solution:** Implemented a manual Import Section encoder. The Rust compiler explicitly injects an imported namespace sequence tracking an external JS environment function (like env.print). The compiled WASM module computes the complex mathematics natively, pushes the result to the evaluation stack, invokes the imported function, and securely prints out the validated result into the console.
+## 📂 Repository Layout
+ * /src/main.rs - The complete engine core: Lexer, Parser, AST Analyzer, and raw WASM Byte Generator.
+ * compiler.dx / test.dx - Scripts written in the custom DX language layout.
+ * run_compiler.js - Helper script orchestration for running continuous integration tasks.
+ * run.js - The target V8/Node.js testing host environment that securely links, loads, and evaluates the generated bytecode.
+ * output.wasm - The final, production-ready, ultra-optimized native binary artifact.
+## ⚡ Quick Start
+Experience the compiler pipeline natively. Ensure you have **Rust** and **Node.js** installed, then run the execution cycle:
+```
+# Step 1: Run the Rust compiler to parse your script and generate output.wasm
+cargo run
+# Step 2: Run the JS host script to execute the binary directly in the V8 engine
+node run.js
+```
+*Expected Output:* [WASM Print]: 6 (or the evaluated mathematical total of your custom script).
+## ⚖️ The 5-License Choice (Maximum Openness)
+I believe open-source tools should grant absolute freedom. To ensure this codebase can be utilized by enterprise architects, academic researchers, or digital anarchists alike, it is distributed under a **Multi-Licensing Strategy**.
+You maintain the explicit legal right to utilize, reference, modify, or break this software under the terms of **any of these 5 licenses**:
+
+| License | Paradigm | Best Used For |
+| :--- | :--- | :--- |
+| **MIT** | *Permissive* | "Do whatever you want, just retain the copyright notice." |
+| **Apache 2.0** | *Enterprise* | Secure corporate implementation with explicit patent protection rules. |
+| **GPL v3** | *Copyleft* | Guaranteeing that all future mutations of this compiler stay open-source. |
+| **BSD 3-Clause** | *Academic* | Code reuse but shields my identity from being used to promote spin-offs. |
+| **The Unlicense** | *Public Domain* | Complete structural freedom. Dedicated entirely to the public domain. |
+
+*Please explore the dedicated LICENSES/ directory to read the full, unmodified legal texts for each specific legal framework!*
