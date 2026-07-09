@@ -89,4 +89,3 @@ You maintain the explicit legal right to utilize, reference, modify, or break th
 | **The Unlicense** | *Public Domain* | Complete structural freedom. Dedicated entirely to the public domain. |
 
 *Please explore the dedicated LICENSES/ directory to read the full, unmodified legal texts for each specific legal framework!*
-```
