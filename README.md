@@ -2,10 +2,11 @@
 
 # DX-WASM: Ahead-of-Time (AOT) Compiler & Custom DSL From Scratch 🚀
 ---
-![Rust](https://img.shields.io/badge/rust-2021-orange.svg)
-![WASM](https://img.shields.io/badge/wasm-raw_bytecode-blue.svg)
-![License](https://img.shields.io/badge/license-MIT%20%2F%20Apache%20%2F%20GPL%20%2F%20BSD%20%2F%20Unlicense-brightgreen.svg)
-![Status](https://img.shields.io/badge/status-active_development-success.svg)
+
+[![Rust](https://img.shields.io/badge/rust-2021-orange.svg)](https://www.rust-lang.org)
+[![WASM](https://img.shields.io/badge/wasm-raw_bytecode-blue.svg)](https://webassembly.org)
+[![License](https://img.shields.io/badge/license-MIT%20%2F%20Apache%20%2F%20GPL%20%2F%20BSD%20%2F%20Unlicense-brightgreen.svg)](#-the-5-license-choice-maximum-openness)
+[![Status](https://img.shields.io/badge/status-active_development-success.svg)](https://github.com/daxo-developer/parser-by-daxo/commits/main)
 > **"Why use a ready-made WebAssembly encoder library when you can spend nights staring at raw hex dumps, figuring out exactly why the Google V8 engine rejected your binary stream?"**
 This is a lightweight, zero-dependency, Ahead-of-Time (AOT) compiler written in **Rust** that takes a custom domain-specific language (**DX**) and compiles it directly into valid, executable **WebAssembly (WASM)** binary modules. 
 No LLVM wrappers, no `walrus` or `wasm-encoder` crates. Just raw tokenization, expression parsing, Abstract Syntax Tree (AST) generation, and manual byte-by-byte serialization.
